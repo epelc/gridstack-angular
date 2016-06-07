@@ -1,10 +1,3 @@
-/**
- * gridstack-angular - Angular Gridstack.js directive
- * @version v0.5.0-dev
- * @author Kevin Dietrich
- * @link https://github.com/kdietrich/gridstack-angular#readme
- * @license MIT
- */
 (function() {
   'use strict';
 
@@ -56,12 +49,14 @@
         onDragStop: '&',
         onResizeStart: '&',
         onResizeStop: '&',
+        gridstackHandler: '=',
         options: '='
       },
       link: function (scope, element, attrs, controller, ngModel) {
 
-        controller.init(element, scope.options);
-
+        var gridstack = controller.init(element, scope.options);
+        scope.gridstackHandler = gridstack;
+        
         element.on('change', function (e, items) {
           $timeout(function() {
             scope.$apply();
@@ -96,6 +91,7 @@
 
   }]);
 })();
+
 (function() {
   'use strict';
 
