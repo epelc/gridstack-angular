@@ -15,14 +15,14 @@
         onDragStop: '&',
         onResizeStart: '&',
         onResizeStop: '&',
-        gridstackHandler: '=',
+        gridstackHandler: '=?',
         options: '='
       },
       link: function (scope, element, attrs, controller, ngModel) {
 
         var gridstack = controller.init(element, scope.options);
         scope.gridstackHandler = gridstack;
-        
+
         element.on('change', function (e, items) {
           $timeout(function() {
             scope.$apply();
