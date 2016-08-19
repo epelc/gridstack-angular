@@ -6,24 +6,23 @@ angular.module('gridstack-angular', []);
 var app = angular.module('gridstack-angular');
 
 app.controller('GridstackController', ['$scope', function($scope) {
-
-  var gridstack = null;
+  var self = this;
 
   this.init = function(element, options) {
-    gridstack = element.gridstack(options).data('gridstack');
-    return gridstack;
+    self.gridstackHandler = element.gridstack(options).data('gridstack');
+    return self.gridstackHandler;
   };
 
   this.removeItem = function(element) {
-    if(gridstack) {
-      return gridstack.removeWidget(element, false);
+    if(self.gridstackHandler) {
+      return self.gridstackHandler.removeWidget(element, false);
     }
     return null;
   };
 
   this.addItem = function(element) {
-    if(gridstack) {
-      gridstack.makeWidget(element);
+    if(self.gridstackHandler) {
+      self.gridstackHandler.makeWidget(element);
       return element;
     }
     return null;

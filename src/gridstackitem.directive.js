@@ -7,7 +7,6 @@ app.directive('gridstackItem', ['$timeout', function($timeout) {
 
   return {
     restrict: 'A',
-    controller: 'GridstackController',
     require: '^gridstack',
     scope: {
       gridstackItem: '=',
@@ -20,7 +19,7 @@ app.directive('gridstackItem', ['$timeout', function($timeout) {
       gsItemHeight: '=',
       gsItemAutopos: '='
     },
-    link: function(scope, element, attrs, controller) {
+    link: function(scope, element, attrs, gridstackController) {
       if (scope.gsItemId) {
         $(element).attr('data-gs-id', scope.gsItemId);
       }
@@ -29,12 +28,21 @@ app.directive('gridstackItem', ['$timeout', function($timeout) {
       $(element).attr('data-gs-width', scope.gsItemWidth);
       $(element).attr('data-gs-height', scope.gsItemHeight);
       $(element).attr('data-gs-auto-position', scope.gsItemAutopos);
-      var widget = controller.addItem(element);
+      var widget = gridstackController.addItem(element);
       var item = element.data('_gridstack_node');
       $timeout(function() {
         scope.onItemAdded({item: item});
       });
 
+      // Update gridstack element after scope changes
+      scope.$watchGroup(['gsItemX', 'gsItemY'], function() {
+        gridstackController.gridstackHandler.move(element, scope.gsItemX, scope.gsItemY);
+      });
+      scope.$watchGroup(['gsItemWidth', 'gsItemHeight'], function() {
+        gridstackController.gridstackHandler.resize(element, scope.gsItemWidth, scope.gsItemHeight);
+      });
+
+      // Update scope after gridstack attributes change
       scope.$watch(function() { return $(element).attr('data-gs-id'); }, function(val) {
         scope.gsItemId = val;
       });
@@ -58,7 +66,7 @@ app.directive('gridstackItem', ['$timeout', function($timeout) {
       element.bind('$destroy', function() {
         var item = element.data('_gridstack_node');
         scope.onItemRemoved({item: item});
-        controller.removeItem(element);
+        gridstackController.removeItem(element);
       });
 
     }
