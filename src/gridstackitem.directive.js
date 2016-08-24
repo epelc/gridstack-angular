@@ -38,16 +38,13 @@ app.directive('gridstackItem', ['$timeout', function($timeout) {
       // NOTE we must only make a gridstack update call for these watchers if something changed.
       // Otherwise it will cause issues with the 'change' event not firing because you ran an
       // update op partway through it.
-      scope.$watchGroup(['gsItemX', 'gsItemY'], function() {
+      scope.$watchGroup(['gsItemX', 'gsItemY', 'gsItemWidth', 'gsItemHeight'], function() {
         if (Number(element.attr('data-gs-x')) !== scope.gsItemX ||
-         Number(element.attr('data-gs-y')) !== scope.gsItemY) {
-          gridstackController.gridstackHandler.move(element, scope.gsItemX, scope.gsItemY);
-        }
-      });
-      scope.$watchGroup(['gsItemWidth', 'gsItemHeight'], function() {
-        if (Number(element.attr('data-gs-width')) !== scope.gsItemWidth ||
-         Number(element.attr('data-gs-height')) !== scope.gsItemHeight) {
-          gridstackController.gridstackHandler.resize(element, scope.gsItemWidth, scope.gsItemHeight);
+          Number(element.attr('data-gs-y')) !== scope.gsItemY ||
+          Number(element.attr('data-gs-width')) !== scope.gsItemWidth ||
+          Number(element.attr('data-gs-height')) !== scope.gsItemHeight) {
+          gridstackController.gridstackHandler.update(element, scope.gsItemX, scope.gsItemY,
+            scope.gsItemWidth, scope.gsItemHeight);
         }
       });
 
