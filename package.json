@@ -1,5 +1,5 @@
 {
-  "name": "gridstack-angular-b",
+  "name": "@epelc/gridstack-angular",
   "version": "0.6.0-dev",
   "description": "Angular Gridstack.js directive",
   "repository": {
